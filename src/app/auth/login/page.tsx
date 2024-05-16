@@ -3,33 +3,48 @@
 import { useState } from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
-import { loginSchema, Errors } from "@/app/utils/validation";
+import { loginSchema, IErrors } from "@/app/utils/validation";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
-interface LoginInput {
-  username: string;
+interface ILoginInput {
+  email: string;
   password: string;
 }
 
 const Login: React.FC = () => {
-  const [login, setLogin] = useState<LoginInput>({
-    username: "",
+  const router = useRouter();
+  const [login, setLogin] = useState<ILoginInput>({
+    email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<IErrors>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLogin((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = loginSchema.safeParse(login);
-    if (!result.success) {
-      setErrors(result.error.formErrors.fieldErrors);
-      return;
-    } else {
-      console.log(login);
+    try {
+      const parseLogin = loginSchema.safeParse(login);
+      if (!parseLogin.success) {
+        setErrors(parseLogin.error.formErrors.fieldErrors);
+        return;
+      }
+      const result = await axios.post("/api/users/login", login);
+      if (result) {
+        router.push("/");
+      }
+    } catch (error: any) {
+      const serverError = error.response.data.error;
+      if (serverError === "User not found") {
+        setErrors({ email: serverError });
+      } else if (serverError === "Invalid password") {
+        setErrors({ password: serverError });
+      }
+      console.error("An error occurred while logging in: ", error.message);
     }
   };
 
@@ -38,20 +53,20 @@ const Login: React.FC = () => {
       <h1 className="text-3xl font-bold">Login</h1>
       <form
         className="flex flex-col justify-center gap-4 w-72"
-        onSubmit={handleSubmit}
+        onSubmit={handleLogin}
         noValidate
       >
         <Input
           isRequired
           type="text"
-          label="Username"
-          name="username"
-          placeholder="Username"
+          label="Email"
+          name="email"
+          placeholder="Email"
           variant="bordered"
-          value={login.username}
+          value={login.email}
           onChange={handleChange}
-          isInvalid={!!errors.username}
-          errorMessage={errors.username}
+          isInvalid={!!errors.email}
+          errorMessage={errors.email}
         />
         <Input
           isRequired
