@@ -7,7 +7,12 @@ export interface Errors {
   confirmPassword?: string[];
 }
 
-const userSchema = z
+const loginSchema = z.object({
+  username: z.string().trim().min(1, { message: "Username is required" }),
+  password: z.string().min(1, { message: "Password is required" }),
+});
+
+const registerSchema = z
   .object({
     email: z.string().email(),
     username: z.string().min(3),
@@ -24,4 +29,4 @@ const userSchema = z
     }
   );
 
-export { userSchema };
+export { loginSchema, registerSchema };
