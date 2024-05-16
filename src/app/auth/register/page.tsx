@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { userSchema, Errors } from "@/app/utils/validation";
+import { registerSchema, Errors } from "@/app/utils/validation";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 
@@ -28,7 +28,7 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = userSchema.safeParse(register);
+    const result = registerSchema.safeParse(register);
     if (!result.success) {
       setErrors(result.error.formErrors.fieldErrors);
       return;
