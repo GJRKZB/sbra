@@ -1,14 +1,15 @@
 import { z } from "zod";
 
-export interface Errors {
+export interface IErrors {
   email?: string[];
   username?: string[];
   password?: string[];
   confirmPassword?: string[];
+  message?: string[];
 }
 
 const loginSchema = z.object({
-  username: z.string().trim().min(1, { message: "Username is required" }),
+  email: z.string().email(),
   password: z.string().min(1, { message: "Password is required" }),
 });
 

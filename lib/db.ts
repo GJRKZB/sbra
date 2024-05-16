@@ -1,7 +1,7 @@
 import mongoose, { Connection } from "mongoose";
 
 let cachedConnection: Connection | null = null;
-export async function connectToMongoDB() {
+export async function ConnectDB() {
   // If a cached connection exists, return it
   if (cachedConnection) {
     console.log("Using cached db connection");

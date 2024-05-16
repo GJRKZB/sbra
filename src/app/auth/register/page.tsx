@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { registerSchema, Errors } from "@/app/utils/validation";
+import { registerSchema, IErrors } from "@/app/utils/validation";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 
-interface RegisterInput {
+interface IRegisterInput {
   email: string;
   username: string;
   password: string;
@@ -13,27 +15,40 @@ interface RegisterInput {
 }
 
 const Register: React.FC = () => {
-  const [register, setRegister] = useState<RegisterInput>({
+  const router = useRouter();
+  const [register, setRegister] = useState<IRegisterInput>({
     email: "",
     username: "",
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<IErrors>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRegister((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = registerSchema.safeParse(register);
-    if (!result.success) {
-      setErrors(result.error.formErrors.fieldErrors);
-      return;
-    } else {
-      console.log(register);
+    try {
+      const parseRegister = registerSchema.safeParse(register);
+      if (!parseRegister.success) {
+        setErrors(parseRegister.error.formErrors.fieldErrors);
+        return;
+      } else {
+        const result = await axios.post("/api/users/register", register);
+        if (result) {
+          router.push("/");
+          console.log(register);
+        }
+      }
+    } catch (error: any) {
+      const serverError = error.response.data.error;
+      if (serverError === "Email already exists") {
+        setErrors({ email: serverError });
+      }
+      console.error("An error occurred while registering: ", error.message);
     }
   };
 
@@ -42,7 +57,7 @@ const Register: React.FC = () => {
       <h1 className="text-3xl font-bold">Register</h1>
       <form
         className="flex flex-col justify-center gap-4 w-72"
-        onSubmit={handleSubmit}
+        onSubmit={handleRegister}
         noValidate
       >
         <Input
