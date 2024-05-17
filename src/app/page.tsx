@@ -1,10 +1,10 @@
 import { NextUIProvider } from "@nextui-org/react";
 
-export default function page() {
+export default async function page() {
   return (
     <div>
       <NextUIProvider>
-        <div>page</div>
+        <div>Main</div>
       </NextUIProvider>
     </div>
   );
