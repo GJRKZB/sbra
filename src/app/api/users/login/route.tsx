@@ -1,7 +1,7 @@
-import User from "@/models/userModel";
+import User from "@/app/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
+import { createSession } from "@/app/lib/session";
 import bcrypt from "bcrypt";
-
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -18,11 +18,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid password" }, { status: 400 });
     }
 
-    const response = NextResponse.json(
-      { message: "Login successful", succes: true },
-      { status: 200 }
-    );
-    return response;
+    if (user && validPassword) {
+      await createSession(user.username);
+      const response = NextResponse.json(
+        { message: "Login successful", success: true },
+        { status: 200, headers: { "content-type": "application/json" } }
+      );
+      return response;
+    }
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
