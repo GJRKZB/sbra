@@ -37,11 +37,27 @@ export async function createSession(username: string) {
   });
 }
 
-export async function getSession() {
-  const session = cookies().get("session")?.value;
-  if (!session) return null;
+// export async function getSession() {
+//   const session = cookies().get("session")?.value;
+//   if (!session) return null;
 
-  return await decrypt(session);
+//   return await decrypt(session);
+// }
+
+export async function getUser(): Promise<{
+  isAuthenticated: boolean;
+  user?: { username: string };
+}> {
+  const session = cookies().get("session")?.value;
+  const verified = session && (await decrypt(session));
+
+  if (verified) {
+    return {
+      isAuthenticated: true,
+      user: { username: verified.username },
+    };
+  }
+  return { isAuthenticated: false };
 }
 
 export async function updateSession(request: NextRequest) {
