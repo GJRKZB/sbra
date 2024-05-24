@@ -50,9 +50,9 @@ const Login: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center text-center gap-4">
-      <h1 className="text-3xl font-bold">Login</h1>
+      <h1 className="font-mono text-2xl font-bold">Login</h1>
       <form
-        className="flex flex-col justify-center gap-4 w-72"
+        className="flex flex-col justify-center gap-4 w-72 font-mono"
         onSubmit={handleLogin}
         noValidate
       >
