@@ -1,5 +1,5 @@
 import { HeroImage } from "@/app/components/cards/hero/card";
-import { RestaurantCard } from "./components/cards/restaurant/card";
+import { Restaurants } from "./components/cards/restaurant/restaurants";
 
 export default function Page() {
   return (
@@ -15,10 +15,10 @@ export default function Page() {
             magna. Sit exercitation laborum tempor ex sunt nulla.
           </p>
         </header>
-        <section className="justify-center">
+        <section className="font-mono text-center">
           <HeroImage
-            src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-            alt="hero"
+            src="jpg/pexels-pascal-claivaz-66964-410648.jpg"
+            alt="spareribs with sauce and vegetables on white ceramic plate"
           />
         </section>
         <section className="font-mono text-center flex flex-col gap-10">
@@ -31,7 +31,7 @@ export default function Page() {
             eu exercitation ad. Id et dolor ut excepteur ullamco aliqua ullamco
             proident aliqua.
           </p>
-          <RestaurantCard />
+          <Restaurants />
         </section>
       </article>
     </main>

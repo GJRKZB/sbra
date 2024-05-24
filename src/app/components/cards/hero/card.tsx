@@ -7,8 +7,15 @@ interface HeroImageProps {
 
 export const HeroImage: React.FC<HeroImageProps> = ({ src, alt }) => {
   return (
-    <div className="flex h-96">
-      <Image src={src} alt={alt} className="object-cover h-full" />
+    <div className="h-96">
+      <Card className="h-full font-mono text-start">
+        <Image
+          removeWrapper
+          alt={alt}
+          className="w-screen h-full object-cover"
+          src={src}
+        />
+      </Card>
     </div>
   );
 };
