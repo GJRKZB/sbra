@@ -1,5 +1,5 @@
 import { HeroImage } from "@/app/components/cards/hero/card";
-import { Restaurants } from "./components/cards/restaurant/restaurants";
+import Restaurants from "@/app/components/cards/restaurant/restaurants";
 
 export default function Page() {
   return (

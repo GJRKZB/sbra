@@ -1,12 +1,13 @@
-import { restaurants } from "@/app/data/restaurants";
-import { RestaurantCard } from "@/app/components/cards/restaurant/card";
+import data from "@/app/data/restaurants.json";
+import RestaurantCard from "@/app/components/cards/restaurant/card";
 
-export const Restaurants = () => {
+const Restaurants: React.FC = () => {
   return (
     <div className="flex flex-col gap-10">
-      {restaurants.map((restaurant) => (
+      {data.restaurants.map((restaurant) => (
         <RestaurantCard
           key={restaurant.id}
+          id={restaurant.id}
           title={restaurant.name}
           description={restaurant.description}
           image={restaurant.image}
@@ -16,3 +17,5 @@ export const Restaurants = () => {
     </div>
   );
 };
+
+export default Restaurants;
