@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 
-const RestaurantButton: React.FC<{ slug: string }> = ({ slug }) => {
+const ViewRestaurantBtn: React.FC<{ slug: string }> = ({ slug }) => {
   return (
     <Link href={`/restaurant/${slug}`}>
       <Button className="text-sm text-white bg-black" radius="full" size="lg">
@@ -11,4 +11,4 @@ const RestaurantButton: React.FC<{ slug: string }> = ({ slug }) => {
   );
 };
 
-export default RestaurantButton;
+export default ViewRestaurantBtn;

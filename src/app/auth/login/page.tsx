@@ -81,7 +81,7 @@ const Login: React.FC = () => {
           errorMessage={errors.password}
         />
         <Button color="primary" variant="ghost" size="lg" type="submit">
-          Register
+          Login
         </Button>
       </form>
     </div>

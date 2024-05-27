@@ -4,6 +4,7 @@ import { ConnectDB } from "./lib/db";
 import { NextUIProvider } from "@nextui-org/react";
 
 import "./globals.css";
+import NavbarComponent from "./components/navbar/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextUIProvider>{children}</NextUIProvider>
+        <NextUIProvider>
+          <NavbarComponent />
+          {children}
+        </NextUIProvider>
       </body>
     </html>
   );
