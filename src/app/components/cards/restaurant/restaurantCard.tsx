@@ -1,22 +1,22 @@
 "use client";
 
 import { Card, CardFooter, Image } from "@nextui-org/react";
-import RestaurantButton from "@/app/components/buttons/restaurant/restaurant";
+import ViewRestaurantBtn from "../../buttons/restaurant/viewRestaurantBtn";
 
 interface RestaurantCardProps {
-  id: number;
   title: string;
   description: string;
   image?: string;
   rating?: number;
+  slug: string;
 }
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({
-  id,
   title,
   description,
   image,
   rating,
+  slug,
 }) => {
   return (
     <div className="h-96">
@@ -33,7 +33,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
             <p className="text-base font-normal">{description}</p>
             <p className="text-sm">{rating}</p>
           </div>
-          <RestaurantButton id={id} />
+          <ViewRestaurantBtn slug={slug} />
         </CardFooter>
       </Card>
     </div>

@@ -2,31 +2,35 @@
   "restaurants": [
     {
       "id": 1,
-      "name": "Burger King",
+      "title": "Burger King",
       "description": "Fast food, American",
-      "image": "jpg/pexels-valeriya-1639562.jpg",
-      "rating": 4.5
+      "image": "/jpg/pexels-valeriya-1639562.jpg",
+      "rating": 4.5,
+      "slug": "burger-king"
     },
     {
       "id": 2,
-      "name": "McDonald's",
+      "title": "McDonald's",
       "description": "Fast food, American",
-      "image": "jpg/pexels-north-framing-386433982-14692594.jpg",
-      "rating": 4.5
+      "image": "/jpg/pexels-north-framing-386433982-14692594.jpg",
+      "rating": 4.5,
+      "slug": "mcdonalds"
     },
     {
       "id": 3,
-      "name": "KFC",
+      "title": "KFC",
       "description": "Fast food, American",
-      "image": "jpg/pexels-introspectivedsgn-7832983.jpg",
-      "rating": 4.5
+      "image": "/jpg/pexels-introspectivedsgn-7832983.jpg",
+      "rating": 4.5,
+      "slug": "kfc"
     },
     {
       "id": 4,
-      "name": "Pizza Hut",
+      "title": "Pizza Hut",
       "description": "Fast food, American",
-      "image": "jpg/pexels-mrpixelwala-18220737.jpg",
-      "rating": 4.5
+      "image": "/jpg/pexels-mrpixelwala-18220737.jpg",
+      "rating": 4.5,
+      "slug": "pizza-hut"
     }
   ]
 }

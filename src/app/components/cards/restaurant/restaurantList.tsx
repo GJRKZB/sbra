@@ -1,5 +1,5 @@
 import data from "@/app/data/restaurants.json";
-import RestaurantCard from "@/app/components/cards/restaurant/card";
+import RestaurantCard from "@/app/components/cards/restaurant/restaurantCard";
 
 const Restaurants: React.FC = () => {
   return (
@@ -7,11 +7,11 @@ const Restaurants: React.FC = () => {
       {data.restaurants.map((restaurant) => (
         <RestaurantCard
           key={restaurant.id}
-          id={restaurant.id}
-          title={restaurant.name}
+          title={restaurant.title}
           description={restaurant.description}
           image={restaurant.image}
           rating={restaurant.rating}
+          slug={restaurant.slug}
         />
       ))}
     </div>
