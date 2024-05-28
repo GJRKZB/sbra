@@ -9,7 +9,7 @@ import {
 
 export default function NavbarComponent() {
   return (
-    <Navbar shouldHideOnScroll>
+    <Navbar shouldHideOnScroll maxWidth="full">
       <NavbarItem>
         <Link href="/" className="text-base font-mono text-black">
           Home
@@ -25,6 +25,7 @@ export default function NavbarComponent() {
           <Button
             as={Link}
             color="default"
+            radius="full"
             href="/auth/register"
             className="text-base text-white font-mono bg-black"
           >
