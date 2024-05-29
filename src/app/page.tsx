@@ -1,5 +1,5 @@
-import { HeroImage } from "@/app/components/cards/hero/card";
-import { Restaurants } from "./components/cards/restaurant/restaurants";
+import { HeroImage } from "@/app/components/cards/hero/heroCard";
+import RestaurantList from "@/app/components/cards/restaurant/restaurantList";
 
 export default function Page() {
   return (
@@ -31,7 +31,7 @@ export default function Page() {
             eu exercitation ad. Id et dolor ut excepteur ullamco aliqua ullamco
             proident aliqua.
           </p>
-          <Restaurants />
+          <RestaurantList />
         </section>
       </article>
     </main>

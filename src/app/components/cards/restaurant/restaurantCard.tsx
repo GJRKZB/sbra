@@ -1,26 +1,29 @@
 "use client";
 
-import { Card, CardFooter, Image, Button } from "@nextui-org/react";
+import { Card, CardFooter, Image } from "@nextui-org/react";
+import ViewRestaurantBtn from "../../buttons/restaurant/viewRestaurantBtn";
 
-interface IRestaurantCardProps {
+interface RestaurantCardProps {
   title: string;
   description: string;
   image?: string;
   rating?: number;
+  slug: string;
 }
 
-export const RestaurantCard: React.FC<IRestaurantCardProps> = ({
+const RestaurantCard: React.FC<RestaurantCardProps> = ({
   title,
   description,
   image,
   rating,
+  slug,
 }) => {
   return (
     <div className="h-96">
       <Card className="h-full font-mono text-start" isFooterBlurred>
         <Image
           removeWrapper
-          alt="Card example background"
+          alt={title}
           className="z-0 w-screen h-full scale-125 -translate-y-6 object-cover"
           src={image}
         />
@@ -30,16 +33,11 @@ export const RestaurantCard: React.FC<IRestaurantCardProps> = ({
             <p className="text-base font-normal">{description}</p>
             <p className="text-sm">{rating}</p>
           </div>
-          <Button
-            className="text-sm text-white bg-black"
-            radius="full"
-            size="lg"
-            onClick={() => console.log("Give review")}
-          >
-            Give review
-          </Button>
+          <ViewRestaurantBtn slug={slug} />
         </CardFooter>
       </Card>
     </div>
   );
 };
+
+export default RestaurantCard;

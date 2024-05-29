@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ConnectDB } from "./lib/db";
-import { NextUIProvider } from "@nextui-org/react";
-
 import "./globals.css";
+import { Providers } from "@/app/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   ConnectDB();
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextUIProvider>{children}</NextUIProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
