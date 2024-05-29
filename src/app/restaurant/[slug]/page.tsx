@@ -2,12 +2,13 @@ import data from "@/app/data/restaurants.json";
 import { notFound } from "next/navigation";
 import { Image, Button } from "@nextui-org/react";
 import Link from "next/link";
+import { ReviewSliders } from "@/app/components/reviews/reviewSlider";
 
 interface IRestaurant {
   title: string;
   description: string;
   image: string;
-  rating: number;
+  totalRating: number;
   slug: string;
 }
 
@@ -34,23 +35,44 @@ const Page = async ({ params }: IParams) => {
   }
 
   return (
-    <div>
-      <h1>{restaurant.title}</h1>
-      <p>{restaurant.description}</p>
-      <Image
-        src={restaurant.image}
-        alt={restaurant.title}
-        width={500}
-        height={500}
-      />
-      <p>{restaurant.rating}</p>
-
-      <Link href="/">
-        <Button className="text-sm text-white bg-black" radius="full" size="lg">
-          Go back
-        </Button>
-      </Link>
-    </div>
+    <main className="h-full w-screen px-5 pt-10">
+      <article className="flex justify-center flex-col items-center gap-10 w-full">
+        <section className="font-mono text-center flex flex-col gap-10 w-full items-center">
+          <h1 className="font-bold text-2xl">{restaurant.title}</h1>
+          <p className="font-normal text-base">{restaurant.description}</p>
+          <Image
+            removeWrapper
+            src={restaurant.image}
+            alt={restaurant.title}
+            className="object-cover w-screen h-96"
+          />
+          <div className="flex flex-col gap-2">
+            <p className="font-bold text-base text-black">Rating:</p>
+            <div className="bg-black p-5 rounded-full">
+              <p className="font-bold text-base text-white">
+                {restaurant.totalRating}
+              </p>
+            </div>
+          </div>
+          <p className="font-normal text-base">
+            Ullamco exercitation culpa magna fugiat nostrud deserunt. Magna
+            reprehenderit anim esse anim laborum id magna enim consequat nisi
+            voluptate aute. Duis ex sunt fugiat consequat adipisicing anim
+            adipisicing eu esse.
+          </p>
+          <ReviewSliders />
+          <Link href="/">
+            <Button
+              className="text-sm text-white bg-black"
+              radius="full"
+              size="lg"
+            >
+              Go back
+            </Button>
+          </Link>
+        </section>
+      </article>
+    </main>
   );
 };
 
