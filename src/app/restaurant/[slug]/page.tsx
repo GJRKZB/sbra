@@ -2,7 +2,7 @@ import data from "@/app/data/restaurants.json";
 import { notFound } from "next/navigation";
 import { Image, Button } from "@nextui-org/react";
 import Link from "next/link";
-import ReviewSliders from "@/app/components/reviews/reviewSliders";
+import Reviews from "@/app/components/reviews/reviews";
 
 interface IRestaurant {
   title: string;
@@ -62,7 +62,7 @@ const Page = async ({ params }: IParams) => {
             voluptate aute. Duis ex sunt fugiat consequat adipisicing anim
             adipisicing eu esse.
           </p>
-          <ReviewSliders factors={restaurant.factors} />
+          <Reviews factors={restaurant.factors} title={restaurant.title} />
           <Link href="/">
             <Button
               className="text-sm text-white bg-black"

@@ -2,16 +2,18 @@
 
 import React from "react";
 import { Slider } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ReviewSliderProps {
+  title: string;
   factors: { id: number; label: string; rating: number }[];
 }
 
-const ReviewSliders: React.FC<ReviewSliderProps> = ({ factors }) => {
+const Reviews: React.FC<ReviewSliderProps> = ({ title, factors }) => {
   const [values, setValues] = useState<number[]>(
     factors.map((factor) => factor.rating)
   );
+
   const average = (
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
@@ -22,6 +24,10 @@ const ReviewSliders: React.FC<ReviewSliderProps> = ({ factors }) => {
       newValues[index] = value;
       return newValues;
     });
+
+    console.log(
+      `Restaurant: ${title}, Factor ${factors[index].label} rating: ${value}`
+    );
   };
 
   return (
@@ -57,4 +63,4 @@ const ReviewSliders: React.FC<ReviewSliderProps> = ({ factors }) => {
   );
 };
 
-export default ReviewSliders;
+export default Reviews;
