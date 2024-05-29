@@ -9,12 +9,14 @@ interface IRestaurant {
   description: string;
   image: string;
   totalRating: number;
+  factors: { id: number; label: string; rating: number }[];
   slug: string;
 }
 
 interface IParams {
   params: { slug: string };
 }
+
 export async function generateStaticParams() {
   const paths = data.restaurants.map((restaurant) => ({
     slug: restaurant.slug,
@@ -60,7 +62,16 @@ const Page = async ({ params }: IParams) => {
             voluptate aute. Duis ex sunt fugiat consequat adipisicing anim
             adipisicing eu esse.
           </p>
-          <ReviewSliders />
+          <div className="flex flex-col gap-2">
+            <p className="font-bold text-base text-black">Your rating</p>
+            <div className="bg-black p-5 rounded-full">
+              <p className="font-bold text-base text-white">0</p>
+            </div>
+          </div>
+          <ReviewSliders
+            factors={restaurant.factors}
+            title={restaurant.title}
+          />
           <Link href="/">
             <Button
               className="text-sm text-white bg-black"
