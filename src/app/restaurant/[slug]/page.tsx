@@ -2,7 +2,7 @@ import data from "@/app/data/restaurants.json";
 import { notFound } from "next/navigation";
 import { Image, Button } from "@nextui-org/react";
 import Link from "next/link";
-import { ReviewSliders } from "@/app/components/reviews/reviewSlider";
+import ReviewSliders from "@/app/components/reviews/reviewSliders";
 
 interface IRestaurant {
   title: string;
@@ -48,9 +48,9 @@ const Page = async ({ params }: IParams) => {
             alt={restaurant.title}
             className="object-cover w-screen h-96"
           />
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 items-center">
             <p className="font-bold text-base text-black">Rating:</p>
-            <div className="bg-black p-5 rounded-full">
+            <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
               <p className="font-bold text-base text-white">
                 {restaurant.totalRating}
               </p>
@@ -62,16 +62,7 @@ const Page = async ({ params }: IParams) => {
             voluptate aute. Duis ex sunt fugiat consequat adipisicing anim
             adipisicing eu esse.
           </p>
-          <div className="flex flex-col gap-2">
-            <p className="font-bold text-base text-black">Your rating</p>
-            <div className="bg-black p-5 rounded-full">
-              <p className="font-bold text-base text-white">0</p>
-            </div>
-          </div>
-          <ReviewSliders
-            factors={restaurant.factors}
-            title={restaurant.title}
-          />
+          <ReviewSliders factors={restaurant.factors} />
           <Link href="/">
             <Button
               className="text-sm text-white bg-black"
