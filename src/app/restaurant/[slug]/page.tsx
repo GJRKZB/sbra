@@ -8,8 +8,8 @@ interface IRestaurant {
   title: string;
   description: string;
   image: string;
-  totalRating: number;
-  factors: { id: number; label: string; rating: number }[];
+  totalReview: number;
+  reviews: { id: number; label: string; review: number }[];
   slug: string;
 }
 
@@ -52,7 +52,7 @@ const Page = async ({ params }: IParams) => {
             <p className="font-bold text-base text-black">Rating:</p>
             <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
               <p className="font-bold text-base text-white">
-                {restaurant.totalRating}
+                {restaurant.totalReview}
               </p>
             </div>
           </div>
@@ -62,7 +62,7 @@ const Page = async ({ params }: IParams) => {
             voluptate aute. Duis ex sunt fugiat consequat adipisicing anim
             adipisicing eu esse.
           </p>
-          <Reviews factors={restaurant.factors} title={restaurant.title} />
+          <Reviews reviews={restaurant.reviews} title={restaurant.title} />
           <Link href="/">
             <Button
               className="text-sm text-white bg-black"

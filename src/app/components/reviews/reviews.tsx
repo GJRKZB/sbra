@@ -1,24 +1,23 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { Slider } from "@nextui-org/react";
-import { useState, useEffect } from "react";
 
 interface ReviewSliderProps {
   title: string;
-  factors: { id: number; label: string; rating: number }[];
+  reviews: { id: number; label: string; review: number }[];
 }
 
-const Reviews: React.FC<ReviewSliderProps> = ({ title, factors }) => {
-  const [values, setValues] = useState<number[]>(
-    factors.map((factor) => factor.rating)
-  );
+const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
+  const [values, setValues] = useState<number[]>(() => {
+    return reviews.map((review) => review.review);
+  });
 
   const average = (
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
 
-  const handleChange = (index: number) => (value: number) => {
+  const handleChange = (index: number) => async (value: number) => {
     setValues((prevValues) => {
       const newValues = [...prevValues];
       newValues[index] = value;
@@ -26,7 +25,7 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, factors }) => {
     });
 
     console.log(
-      `Restaurant: ${title}, Factor ${factors[index].label} rating: ${value}`
+      `Restaurant: ${title}, Factor ${reviews[index].label} rating: ${value}`
     );
   };
 
@@ -39,20 +38,20 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, factors }) => {
         </div>
       </div>
       <div className="w-full flex justify-center flex-col text-mono items-center gap-2">
-        {factors.map((factor, index) => (
+        {reviews.map((review, index) => (
           <div
-            key={factor.id}
+            key={review.id}
             className="w-full flex flex-col items-center gap-2"
           >
             <Slider
               size="lg"
               step={0.5}
               color="foreground"
-              label={factor.label}
+              label={review.label}
               showSteps={true}
               maxValue={5}
               minValue={0}
-              defaultValue={factor.rating}
+              defaultValue={values[index]}
               className="max-w-md"
               onChange={(value) => handleChange(index)(value as number)}
             />
