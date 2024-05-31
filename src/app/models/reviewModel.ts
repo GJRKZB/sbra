@@ -7,7 +7,12 @@ interface IRestaurant {
 
 const reviewSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  reviews: { type: Object, required: true },
+  reviews: [
+    {
+      label: { type: String, required: true },
+      review: { type: Number, required: true },
+    },
+  ],
 });
 
 export default mongoose.models.reviews ||

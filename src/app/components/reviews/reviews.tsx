@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Slider } from "@nextui-org/react";
+import { Button, Slider } from "@nextui-org/react";
+import axios from "axios";
 
 interface ReviewSliderProps {
   title: string;
@@ -29,6 +30,22 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
     );
   };
 
+  const handleSubmit = async () => {
+    console.log(values);
+    try {
+      const response = await axios.post("/api/reviews", {
+        title,
+        reviews: reviews.map((review, index) => ({
+          label: review.label,
+          review: values[index],
+        })),
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col items-center gap-10">
       <div className="w-full flex justify-center flex-col gap-2 items-center">
@@ -51,13 +68,20 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
               showSteps={true}
               maxValue={5}
               minValue={0}
-              defaultValue={values[index]}
+              value={values[index] || 0}
               className="max-w-md"
               onChange={(value) => handleChange(index)(value as number)}
             />
           </div>
         ))}
       </div>
+      <Button
+        className="text-normal text-white bg-black p-8"
+        radius="full"
+        onClick={handleSubmit}
+      >
+        Submit
+      </Button>
     </div>
   );
 };

@@ -7,7 +7,7 @@ interface RestaurantCardProps {
   title: string;
   description: string;
   image?: string;
-  rating?: number;
+  review?: number;
   slug: string;
 }
 
@@ -15,7 +15,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   title,
   description,
   image,
-  rating,
+  review,
   slug,
 }) => {
   return (
@@ -31,7 +31,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           <div>
             <h1 className="text-xl font-bold">{title}</h1>
             <p className="text-base font-normal">{description}</p>
-            <p className="text-sm">{rating}</p>
+            <p className="text-sm">{review}</p>
           </div>
           <ViewRestaurantBtn slug={slug} />
         </CardFooter>

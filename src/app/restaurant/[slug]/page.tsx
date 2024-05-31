@@ -63,15 +63,6 @@ const Page = async ({ params }: IParams) => {
             adipisicing eu esse.
           </p>
           <Reviews reviews={restaurant.reviews} title={restaurant.title} />
-          <Link href="/">
-            <Button
-              className="text-sm text-white bg-black"
-              radius="full"
-              size="lg"
-            >
-              Go back
-            </Button>
-          </Link>
         </section>
       </article>
     </main>
