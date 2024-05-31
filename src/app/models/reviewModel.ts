@@ -11,6 +11,7 @@ const reviewSchema = new mongoose.Schema({
     {
       label: { type: String, required: true },
       review: { type: Number, required: true },
+      _id: false,
     },
   ],
 });
