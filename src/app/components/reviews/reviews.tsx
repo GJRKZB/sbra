@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Slider } from "@nextui-org/react";
 import axios from "axios";
 
@@ -17,6 +17,19 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
   const average = (
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`/api/reviews?title=${title}`);
+        const { reviews } = response.data;
+        setValues(reviews.map((review: any) => review.review));
+      } catch (error) {
+        console.error(error, "No reviews to be found");
+      }
+    };
+    fetchReviews();
+  }, []);
 
   const handleChange = (index: number) => async (value: number) => {
     setValues((prevValues) => {
@@ -68,7 +81,7 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
               showSteps={true}
               maxValue={5}
               minValue={0}
-              value={values[index] || 0}
+              value={values[index] || 0.0}
               className="max-w-md"
               onChange={(value) => handleChange(index)(value as number)}
             />

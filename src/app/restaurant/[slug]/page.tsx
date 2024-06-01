@@ -51,9 +51,7 @@ const Page = async ({ params }: IParams) => {
           <div className="flex flex-col gap-2 items-center">
             <p className="font-bold text-base text-black">Rating:</p>
             <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
-              <p className="font-bold text-base text-white">
-                {restaurant.totalReview}
-              </p>
+              <p className="font-bold text-base text-white">0</p>
             </div>
           </div>
           <p className="font-normal text-base">

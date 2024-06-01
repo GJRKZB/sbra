@@ -31,3 +31,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
+
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const title = url.searchParams.get("title");
+  const review = await Review.findOne({ title });
+
+  try {
+    if (!review) {
+      return NextResponse.json(
+        { message: "Review not found" },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(review, { status: 200 });
+  } catch {
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
