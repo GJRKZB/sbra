@@ -45,21 +45,21 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
     );
   };
 
-  // const handleSubmit = async () => {
-  //   console.log(values);
-  //   try {
-  //     const response = await axios.post("/api/reviews", {
-  //       title,
-  //       reviews: reviews.map((review, index) => ({
-  //         label: review.label,
-  //         review: values[index],
-  //       })),
-  //     });
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleSubmit = async () => {
+    console.log(values);
+    try {
+      const response = await axios.post("http://localhost:8080/api/reviews", {
+        title,
+        reviews: reviews.map((review, index) => ({
+          label: review.label,
+          review: values[index],
+        })),
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,15 +74,16 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
     fetchData();
   }, []);
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post("/api/reviews");
-      const data = response.data;
-      setMessage(data.message);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleSubmit = async () => {
+  //   try {
+  //     const response = await axios.post("http://localhost:8080/api/reviews");
+  //     const data = response.data;
+  //     console.log(data);
+  //     // setMessage(data.message);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="w-full flex flex-col items-center gap-10">

@@ -1,5 +1,5 @@
-import Review from "@/app/models/reviewModel";
-import { NextRequest, NextResponse } from "next/server";
+// import Review from "@/app/models/reviewModel";
+// import { NextRequest, NextResponse } from "next/server";
 
 // export async function POST(request: NextRequest) {
 //   try {
@@ -53,10 +53,10 @@ import { NextRequest, NextResponse } from "next/server";
 //   }
 // }
 
-export async function POST(request: NextRequest) {
-  return NextResponse.json({ message: "Post Data" });
-}
+// export async function POST(request: NextRequest) {
+//   return NextResponse.json({ message: "Post Data" });
+// }
 
-export async function GET(request: NextRequest) {
-  return NextResponse.json({ message: "Fetched Data" });
-}
+// export async function GET(request: NextRequest) {
+//   return NextResponse.json({ message: "Fetched Data" });
+// }
