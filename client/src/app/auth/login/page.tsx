@@ -33,7 +33,10 @@ const Login: React.FC = () => {
         setErrors(parseLogin.error.formErrors.fieldErrors);
         return;
       }
-      const result = await axios.post("/api/users/login", login);
+      const result = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`,
+        login
+      );
       if (result) {
         router.push("/");
       }

@@ -1,5 +1,5 @@
 import express, { Express, Router } from "express";
-import { ConnectDB } from "./config.db";
+import { ConnectDB } from "./lib/config.db";
 import cors from "cors";
 import dotenv from "dotenv";
 import reviewRoutes from "./routes/reviews";
@@ -8,11 +8,11 @@ import loginRoutes from "./routes/login";
 
 dotenv.config();
 
-ConnectDB();
-
 const app: Express = express();
 const port = process.env.PORT || 8080;
 const router = Router();
+
+ConnectDB();
 
 app.use(cors({ origin: "*" }));
 app.use(express.json());

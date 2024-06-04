@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ConnectDB } from "./lib/db";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 
@@ -16,8 +15,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  ConnectDB();
-
   return (
     <html lang="en">
       <body className={inter.className}>
