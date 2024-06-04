@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import reviewRoutes from "./routes/reviews";
 import registerRoutes from "./routes/register";
+import loginRoutes from "./routes/login";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(router);
 
 app.use(reviewRoutes);
 app.use(registerRoutes);
+app.use(loginRoutes);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
