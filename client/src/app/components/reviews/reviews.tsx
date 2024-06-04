@@ -10,6 +10,8 @@ interface ReviewSliderProps {
 }
 
 const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
+  const [message, setMessage] = useState<string>("");
+  const [fetchedData, setFetchedData] = useState<string>("");
   const [values, setValues] = useState<number[]>(() => {
     return reviews.map((review) => review.review);
   });
@@ -18,18 +20,18 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get(`/api/reviews?title=${title}`);
-        const { reviews } = response.data;
-        setValues(reviews.map((review: any) => review.review));
-      } catch (error) {
-        console.error(error, "No reviews to be found");
-      }
-    };
-    fetchReviews();
-  }, []);
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/reviews?title=${title}`);
+  //       const { reviews } = response.data;
+  //       setValues(reviews.map((review: any) => review.review));
+  //     } catch (error) {
+  //       console.error(error, "No reviews to be found");
+  //     }
+  //   };
+  //   fetchReviews();
+  // }, []);
 
   const handleChange = (index: number) => async (value: number) => {
     setValues((prevValues) => {
@@ -46,18 +48,45 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
   const handleSubmit = async () => {
     console.log(values);
     try {
-      const response = await axios.post("/api/reviews", {
-        title,
-        reviews: reviews.map((review, index) => ({
-          label: review.label,
-          review: values[index],
-        })),
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/reviews`,
+        {
+          title,
+          reviews: reviews.map((review, index) => ({
+            label: review.label,
+            review: values[index],
+          })),
+        }
+      );
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("/api/reviews");
+  //       const data = response.data;
+  //       setFetchedData(data.message);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // const handleSubmit = async () => {
+  //   try {
+  //     const response = await axios.post("/api/reviews");
+  //     const data = response.data;
+  //     console.log(data);
+  //     // setMessage(data.message);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="w-full flex flex-col items-center gap-10">
@@ -88,6 +117,8 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
           </div>
         ))}
       </div>
+      <p className="text-base text-black">{fetchedData}</p>
+      <p className="text-base text-black">{message}</p>
       <Button
         className="text-normal text-white bg-black p-8"
         radius="full"
