@@ -37,7 +37,10 @@ const Register: React.FC = () => {
         setErrors(parseRegister.error.formErrors.fieldErrors);
         return;
       } else {
-        const result = await axios.post("/api/users/register", register);
+        const result = await axios.post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/register`,
+          register
+        );
         if (result) {
           router.push("/");
           console.log(register);
