@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import User from "../models/userModel";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = Router();
 
@@ -20,9 +21,15 @@ router.post("/api/login", async (req: Request, res: Response) => {
     }
 
     if (user && validPassword) {
+      const token = jwt.sign(
+        { _id: user._id?._id, email: user?.email },
+        process.env.SECRET_KEY as string,
+        { expiresIn: "2hrs" }
+      );
+
       return res
         .status(200)
-        .json({ message: "Login successful", success: true });
+        .json({ message: "Login successful", success: true, token: token });
     }
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
