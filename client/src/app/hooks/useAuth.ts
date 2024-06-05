@@ -28,7 +28,7 @@ export const useAuth = () => {
           setIsAuthenticated(false);
           setLoading(false);
           logout();
-          router.push("/login");
+          router.push("/auth/login");
         });
     } else {
       setLoading(false);
