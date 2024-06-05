@@ -5,7 +5,7 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import { loginSchema, IErrors } from "@/app/utils/validation";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { login } from "../authService";
 
 interface ILoginInput {
   email: string;
@@ -14,7 +14,7 @@ interface ILoginInput {
 
 const Login: React.FC = () => {
   const router = useRouter();
-  const [login, setLogin] = useState<ILoginInput>({
+  const [loginData, setLoginData] = useState<ILoginInput>({
     email: "Test@gmail.com",
     password: "test1234",
   });
@@ -22,28 +22,28 @@ const Login: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLogin((prevState) => ({ ...prevState, [name]: value }));
+    setLoginData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const parseLogin = loginSchema.safeParse(login);
-      if (!parseLogin.success) {
-        setErrors(parseLogin.error.formErrors.fieldErrors);
+      const parseLoginData = loginSchema.safeParse(loginData);
+      if (!parseLoginData.success) {
+        setErrors(parseLoginData.error.formErrors.fieldErrors);
         return;
       }
-      const result = await axios.post("/api/users/login", login);
-      if (result) {
+      const result = await login(loginData);
+      if (result.success) {
         router.push("/");
+      } else {
+        if (result.message === "User not found") {
+          setErrors({ email: result.message });
+        } else if (result.message === "Invalid password") {
+          setErrors({ password: result.message });
+        }
       }
     } catch (error: any) {
-      const serverError = error.response.data.error;
-      if (serverError === "User not found") {
-        setErrors({ email: serverError });
-      } else if (serverError === "Invalid password") {
-        setErrors({ password: serverError });
-      }
       console.error("An error occurred while logging in: ", error.message);
     }
   };
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
           name="email"
           placeholder="Email"
           variant="bordered"
-          value={login.email}
+          value={loginData.email}
           onChange={handleChange}
           isInvalid={!!errors.email}
           errorMessage={errors.email}
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
           name="password"
           placeholder="Password"
           variant="bordered"
-          value={login.password}
+          value={loginData.password}
           onChange={handleChange}
           isInvalid={!!errors.password}
           errorMessage={errors.password}
