@@ -42,7 +42,7 @@ const Register: React.FC = () => {
           register
         );
         if (result) {
-          router.push("/");
+          router.push("/auth/login");
           console.log(register);
         }
       }

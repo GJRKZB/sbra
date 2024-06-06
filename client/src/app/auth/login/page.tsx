@@ -15,8 +15,8 @@ interface ILoginInput {
 const Login: React.FC = () => {
   const router = useRouter();
   const [loginData, setLoginData] = useState<ILoginInput>({
-    email: "Test@gmail.com",
-    password: "test1234",
+    email: "Robin@gmail.com",
+    password: "test",
   });
   const [errors, setErrors] = useState<IErrors>({});
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button, Slider } from "@nextui-org/react";
 import axios from "axios";
+import { useAuth } from "@/app/hooks/useAuth";
 
 interface ReviewSliderProps {
   title: string;
@@ -10,6 +11,7 @@ interface ReviewSliderProps {
 }
 
 const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
+  const { isAuthenticated, user, loading } = useAuth();
   const [message, setMessage] = useState<string>("");
   const [fetchedData, setFetchedData] = useState<string>("");
   const [values, setValues] = useState<number[]>(() => {
@@ -19,19 +21,6 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
   const average = (
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
-
-  // useEffect(() => {
-  //   const fetchReviews = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/reviews?title=${title}`);
-  //       const { reviews } = response.data;
-  //       setValues(reviews.map((review: any) => review.review));
-  //     } catch (error) {
-  //       console.error(error, "No reviews to be found");
-  //     }
-  //   };
-  //   fetchReviews();
-  // }, []);
 
   const handleChange = (index: number) => async (value: number) => {
     setValues((prevValues) => {
@@ -56,76 +45,64 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
             label: review.label,
             review: values[index],
           })),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       console.log(response.data);
+      setMessage("Review submitted successfully!");
     } catch (error) {
       console.error(error);
+      setMessage("An error occurred while submitting the review.");
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/reviews");
-  //       const data = response.data;
-  //       setFetchedData(data.message);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     const response = await axios.post("/api/reviews");
-  //     const data = response.data;
-  //     console.log(data);
-  //     // setMessage(data.message);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   return (
     <div className="w-full flex flex-col items-center gap-10">
-      <div className="w-full flex justify-center flex-col gap-2 items-center">
-        <p className="font-bold text-base text-black">Your rating:</p>
-        <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
-          <p className="font-bold text-base text-white">{average}</p>
-        </div>
-      </div>
-      <div className="w-full flex justify-center flex-col text-mono items-center gap-2">
-        {reviews.map((review, index) => (
-          <div
-            key={review.id}
-            className="w-full flex flex-col items-center gap-2"
-          >
-            <Slider
-              size="lg"
-              step={0.5}
-              color="foreground"
-              label={review.label}
-              showSteps={true}
-              maxValue={5}
-              minValue={0}
-              value={values[index] || 0.0}
-              className="max-w-md"
-              onChange={(value) => handleChange(index)(value as number)}
-            />
+      {isAuthenticated ? (
+        <div className="w-full flex justify-center flex-col text-mono items-center gap-2">
+          <div className="w-full flex justify-center flex-col gap-2 items-center">
+            <p className="font-bold text-base text-black">Your rating:</p>
+            <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
+              <p className="font-bold text-base text-white">{average}</p>
+            </div>
           </div>
-        ))}
-      </div>
-      <p className="text-base text-black">{fetchedData}</p>
-      <p className="text-base text-black">{message}</p>
-      <Button
-        className="text-normal text-white bg-black p-8"
-        radius="full"
-        onClick={handleSubmit}
-      >
-        Submit
-      </Button>
+          {reviews.map((review, index) => (
+            <div
+              key={review.id}
+              className="w-full flex flex-col items-center gap-2"
+            >
+              <Slider
+                size="lg"
+                step={0.5}
+                color="foreground"
+                label={review.label}
+                showSteps={true}
+                maxValue={5}
+                minValue={0}
+                value={values[index] || 0.0}
+                className="max-w-md"
+                onChange={(value) => handleChange(index)(value as number)}
+              />
+            </div>
+          ))}
+          <p className="text-base text-black">{message}</p>
+          <Button
+            className="text-normal text-white bg-black p-8"
+            radius="full"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <p>You need to be logged in to submit a review.</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,35 +1,38 @@
 import { Request, Response, Router } from "express";
-import Review from "../models/reviewModel";
+// import Review from "../models/reviewModel";
+import User from "../models/userModel";
+import { CustomRequest } from "../types/types";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.post("/api/reviews", async (req: Request, res: Response) => {
-  try {
+router.post(
+  "/api/reviews",
+  authMiddleware,
+  async (req: CustomRequest, res: Response) => {
+    const { title, reviews } = req.body;
     const reqBody = req.body;
-    const { title, reviews } = reqBody;
+    console.log(reqBody);
 
-    const updateReview = await Review.findOneAndUpdate(
-      { title },
-      { reviews },
-      { new: true }
-    );
+    try {
+      const user = await User.findById(req.user?._id);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
 
-    if (updateReview) {
-      return res.status(200).json({
-        message: "Review has been updated with success",
-      });
-    } else {
-      const review = new Review({ title, reviews });
+      const review = {
+        title,
+        reviews,
+      };
 
-      await review.save();
+      user.reviews.push(review);
+      await user.save();
 
-      return res.status(201).json({
-        message: "Review has been added with success",
-      });
+      res.status(201).json(review);
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
     }
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message });
   }
-});
+);
 
 export default router;
