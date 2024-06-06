@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<{ _id: string; email: string } | null>(null);
+  const [user, setUsername] = useState<{
+    _id: string;
+    email: string;
+  } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -20,7 +23,7 @@ export const useAuth = () => {
         })
         .then((response) => {
           setIsAuthenticated(true);
-          setUser(response.data.user);
+          setUsername(response.data.user);
           setLoading(false);
         })
         .catch((error) => {

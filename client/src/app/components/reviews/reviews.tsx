@@ -22,19 +22,6 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
 
-  // useEffect(() => {
-  //   const fetchReviews = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/reviews?title=${title}`);
-  //       const { reviews } = response.data;
-  //       setValues(reviews.map((review: any) => review.review));
-  //     } catch (error) {
-  //       console.error(error, "No reviews to be found");
-  //     }
-  //   };
-  //   fetchReviews();
-  // }, []);
-
   const handleChange = (index: number) => async (value: number) => {
     setValues((prevValues) => {
       const newValues = [...prevValues];
@@ -58,37 +45,20 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
             label: review.label,
             review: values[index],
           })),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       console.log(response.data);
+      setMessage("Review submitted successfully!");
     } catch (error) {
       console.error(error);
+      setMessage("An error occurred while submitting the review.");
     }
   };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/reviews");
-  //       const data = response.data;
-  //       setFetchedData(data.message);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     const response = await axios.post("/api/reviews");
-  //     const data = response.data;
-  //     console.log(data);
-  //     // setMessage(data.message);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <div className="w-full flex flex-col items-center gap-10">
@@ -119,7 +89,6 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
               />
             </div>
           ))}
-          <p className="text-base text-black">{fetchedData}</p>
           <p className="text-base text-black">{message}</p>
           <Button
             className="text-normal text-white bg-black p-8"
