@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express";
-// import Review from "../models/reviewModel";
 import User from "../models/userModel";
 import { CustomRequest } from "../types/types";
 import authMiddleware from "../middleware/authMiddleware";
@@ -11,24 +10,54 @@ router.post(
   authMiddleware,
   async (req: CustomRequest, res: Response) => {
     const { title, reviews } = req.body;
-    const reqBody = req.body;
-    console.log(reqBody);
 
     try {
       const user = await User.findById(req.user?._id);
       if (!user) {
-        return res.status(400).json({ message: "User not found" });
+        return res
+          .status(400)
+          .json({ message: `User with ID ${req.user?._id} not found` });
       }
 
-      const review = {
-        title,
-        reviews,
-      };
+      const updateReview = user.reviews.find(
+        (review: any) => review.title === title
+      );
 
-      user.reviews.push(review);
+      if (updateReview) {
+        updateReview.reviews = reviews;
+        updateReview.updatedAt = new Date();
+        res.status(200).json({ message: "Review updated successfully!" });
+      } else {
+        const review = {
+          title,
+          reviews,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        user.reviews.push(review);
+        res.status(201).json({ message: "Review submitted successfully!" });
+      }
+
       await user.save();
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+);
 
-      res.status(201).json(review);
+router.get(
+  "/api/reviews",
+  authMiddleware,
+  async (req: CustomRequest, res: Response) => {
+    try {
+      const user = await User.findById(req.user?._id);
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `User with ID ${req.user?._id} not found` });
+      }
+      return res.status(200).json({ reviews: user.reviews });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }

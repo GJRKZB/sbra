@@ -10,6 +10,8 @@ interface IUser {
 interface IReviews {
   title: string;
   reviews: { label: string; review: number }[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const reviewSchema = new mongoose.Schema(
