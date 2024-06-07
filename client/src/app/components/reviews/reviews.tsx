@@ -13,7 +13,6 @@ interface ReviewSliderProps {
 const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
   const { isAuthenticated, user, loading } = useAuth();
   const [message, setMessage] = useState<string>("");
-  const [fetchedData, setFetchedData] = useState<string>("");
   const [values, setValues] = useState<number[]>(() => {
     return reviews.map((review) => review.review);
   });
@@ -21,6 +20,34 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
   const average = (
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    } else {
+      console.log("User authenticated.");
+      const fetchReviews = async () => {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/reviews`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          response.data.reviews.forEach((review: any) => {
+            if (review.title === title) {
+              setValues(review.reviews.map((review: any) => review.review));
+            }
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchReviews();
+    }
+  }, [isAuthenticated]);
 
   const handleChange = (index: number) => async (value: number) => {
     setValues((prevValues) => {
