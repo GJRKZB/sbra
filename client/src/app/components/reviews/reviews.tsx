@@ -16,31 +16,12 @@ const Reviews: React.FC<ReviewSliderProps> = ({ title, reviews }) => {
   const [values, setValues] = useState<number[]>(() => {
     return reviews.map((review) => review.review);
   });
-  // const [averageReview, setAverageReview] = useState<number | null>(null);
 
   const userAverage = (
     values.reduce((acc, val) => acc + val, 0) / values.length
   ).toFixed(1);
 
   useEffect(() => {
-    // const fetchAverageReview = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/average-reviews`
-    //     );
-    //     const avgReview = response.data.averageReviews.find(
-    //       (avg: any) => avg.title === title
-    //     );
-    //     if (avgReview) {
-    //       setAverageReview(avgReview.averageReview);
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-
-    // fetchAverageReview();
-
     if (isAuthenticated) {
       console.log("User authenticated.");
       const fetchReviews = async () => {
