@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
+import Redirect from "@/app/components/buttons/redirect/redirect";
+import Link from "next/link";
 
 interface IRegisterInput {
   email: string;
@@ -110,10 +112,18 @@ const Register: React.FC = () => {
           isInvalid={!!errors.confirmPassword}
           errorMessage={errors.confirmPassword}
         />
-        <Button color="primary" variant="ghost" size="lg" type="submit">
+        <Button color="default" variant="ghost" size="lg" type="submit">
           Register
         </Button>
+        <p className="font-mono text-sm">Already have an account?</p>
+        <Redirect url="/auth/login">Login</Redirect>
       </form>
+      <p className="font-mono text-sm">
+        Or return to the{" "}
+        <Link href="/" className="font-bold">
+          homepage
+        </Link>
+      </p>
     </div>
   );
 };
