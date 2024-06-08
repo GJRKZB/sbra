@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Image, Button } from "@nextui-org/react";
 import Link from "next/link";
 import Reviews from "@/app/components/reviews/reviews";
+import Average from "@/app/components/reviews/average";
 
 interface IRestaurant {
   title: string;
@@ -48,12 +49,7 @@ const Page = async ({ params }: IParams) => {
             alt={restaurant.title}
             className="object-cover w-screen h-96"
           />
-          <div className="flex flex-col gap-2 items-center">
-            <p className="font-bold text-base text-black">Rating:</p>
-            <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
-              <p className="font-bold text-base text-white">0</p>
-            </div>
-          </div>
+          <Average title={restaurant.title} />
           <p className="font-normal text-base">
             Ullamco exercitation culpa magna fugiat nostrud deserunt. Magna
             reprehenderit anim esse anim laborum id magna enim consequat nisi

@@ -64,4 +64,40 @@ router.get(
   }
 );
 
+router.get("/api/average-reviews", async (req: Request, res: Response) => {
+  try {
+    const users = await User.find();
+    const reviews = users.map((user: any) => user.reviews).flat();
+
+    const reviewsByTitle: { [key: string]: any[] } = {};
+
+    reviews.forEach((review: any) => {
+      if (!reviewsByTitle[review.title]) {
+        reviewsByTitle[review.title] = [];
+      }
+      reviewsByTitle[review.title].push(...review.reviews);
+    });
+
+    const averageReviews = Object.entries(reviewsByTitle).map(
+      ([title, reviews]) => {
+        const totalReview = reviews.reduce(
+          (acc: number, curr: any) => acc + curr.review,
+          0
+        );
+        const averageReview = parseFloat(
+          (totalReview / reviews.length).toFixed(1)
+        );
+        return {
+          title,
+          averageReview,
+        };
+      }
+    );
+
+    res.status(200).json({ averageReviews });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
