@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/react";
 import { loginSchema, IErrors } from "@/app/utils/validation";
 import { useRouter } from "next/navigation";
 import { login } from "../authService";
+import Redirect from "@/app/components/buttons/redirect/redirect";
 
 interface ILoginInput {
   email: string;
@@ -80,9 +81,11 @@ const Login: React.FC = () => {
           isInvalid={!!errors.password}
           errorMessage={errors.password}
         />
-        <Button color="primary" variant="ghost" size="lg" type="submit">
+        <Button color="default" variant="ghost" size="lg" type="submit">
           Login
         </Button>
+        <p className="font-mono text-sm">Don't have an account?</p>
+        <Redirect url="/auth/register">Register</Redirect>
       </form>
     </div>
   );
