@@ -7,6 +7,7 @@ import axios from "axios";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import Redirect from "@/app/components/buttons/redirect/redirect";
+import Link from "next/link";
 
 interface IRegisterInput {
   email: string;
@@ -117,6 +118,12 @@ const Register: React.FC = () => {
         <p className="font-mono text-sm">Already have an account?</p>
         <Redirect url="/auth/login">Login</Redirect>
       </form>
+      <p className="font-mono text-sm">
+        Or return to the{" "}
+        <Link href="/" className="font-bold">
+          homepage
+        </Link>
+      </p>
     </div>
   );
 };
