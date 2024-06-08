@@ -21,7 +21,7 @@ export default function Page() {
             alt="spareribs with sauce and vegetables on white ceramic plate"
           />
         </section>
-        <section className="font-mono text-center flex flex-col gap-10">
+        <section className="font-mono text-center flex flex-col gap-10 pb-20">
           <h2 className="font-bold text-2xl">
             Do proident elit eiusmod ipsum laboris nisi.
           </h2>
