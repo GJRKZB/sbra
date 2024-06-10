@@ -10,7 +10,6 @@ const Restaurants: React.FC = () => {
           title={restaurant.title}
           description={restaurant.description}
           image={restaurant.image}
-          review={restaurant.totalReview}
           slug={restaurant.slug}
         />
       ))}

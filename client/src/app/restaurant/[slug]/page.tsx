@@ -1,7 +1,6 @@
 import data from "@/app/data/restaurants.json";
 import { notFound } from "next/navigation";
-import { Image, Button } from "@nextui-org/react";
-import Link from "next/link";
+import { Image } from "@nextui-org/react";
 import Reviews from "@/app/components/reviews/reviews";
 import Average from "@/app/components/reviews/average";
 
