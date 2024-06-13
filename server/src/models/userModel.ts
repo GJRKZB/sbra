@@ -1,31 +1,22 @@
 import mongoose from "mongoose";
+import { reviewSchema, IReview } from "./reviewModel";
 
 interface IUser {
   username: string;
   email: string;
   password: string;
-  reviews: IReviews[];
+  reviews: Array<{
+    title: string;
+    reviews: IReview[];
+  }>;
 }
 
-interface IReviews {
-  title: string;
-  reviews: { label: string; review: number }[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const reviewSchema = new mongoose.Schema(
+const userReviewSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    reviews: [
-      {
-        label: { type: String, required: true },
-        review: { type: Number, required: true },
-      },
-    ],
+    reviews: [reviewSchema],
   },
   {
-    timestamps: true,
     _id: false,
   }
 );
@@ -35,7 +26,7 @@ const userSchema = new mongoose.Schema(
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    reviews: [reviewSchema],
+    reviews: [userReviewSchema],
   },
   {
     timestamps: true,

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import User from "../models/userModel";
+import { User } from "../models";
 import bcrypt from "bcrypt";
 
 const router = Router();
