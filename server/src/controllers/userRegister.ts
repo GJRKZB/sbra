@@ -1,14 +1,11 @@
-import { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import { User } from "../models";
 import bcrypt from "bcrypt";
 
-const router = Router();
+export const userRegister = async (req: Request, res: Response) => {
+  const { username, email, password } = req.body;
 
-router.post("/api/register", async (req: Request, res: Response) => {
   try {
-    const reqBody = req.body;
-    const { username, email, password } = reqBody;
-
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ error: "Email already exists" });
@@ -25,9 +22,11 @@ router.post("/api/register", async (req: Request, res: Response) => {
     return res
       .status(201)
       .json({ message: "User created successfully", success: true, savedUser });
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        message: error instanceof Error ? error.message : "An error occurred.",
+      });
   }
-});
-
-export default router;
+};

@@ -1,5 +1,5 @@
 import User from "./userModel";
-import { Review } from "./reviewModel";
 import Restaurant from "./restaurantModel";
+import Review from "./reviewModel";
 
-export { User, Review, Restaurant };
+export { User, Restaurant, Review };

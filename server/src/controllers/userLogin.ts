@@ -1,15 +1,12 @@
-import { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import { User } from "../models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const router = Router();
+export const userLogin = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
 
-router.post("/api/login", async (req: Request, res: Response) => {
   try {
-    const reqBody = req.body;
-    const { email, password } = reqBody;
-
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ error: "User not found" });
@@ -22,7 +19,7 @@ router.post("/api/login", async (req: Request, res: Response) => {
 
     if (user && validPassword) {
       const token = jwt.sign(
-        { _id: user._id?._id, email: user?.email },
+        { _id: user?._id, email: user?.email },
         process.env.SECRET_KEY as string,
         { expiresIn: "2hrs" }
       );
@@ -31,9 +28,11 @@ router.post("/api/login", async (req: Request, res: Response) => {
         .status(200)
         .json({ message: "Login successful", success: true, token: token });
     }
-  } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        message: error instanceof Error ? error.message : "An error occurred.",
+      });
   }
-});
-
-export default router;
+};
