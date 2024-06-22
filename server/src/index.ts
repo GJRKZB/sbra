@@ -1,4 +1,4 @@
-import express, { Express, Router } from "express";
+import express, { Express } from "express";
 import { ConnectDB } from "./lib/config.db";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
 import restaurantRoutes from "./routes/restaurantRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
+import protectedRoutes from "./routes/protectedRoutes";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use("/api", userRoutes);
 app.use("/api", restaurantRoutes);
 app.use("/api", reviewRoutes);
+app.use("/api", protectedRoutes);
 
 ConnectDB()
   .then(() => {

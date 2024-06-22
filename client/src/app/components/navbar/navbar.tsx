@@ -7,7 +7,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useAuth } from "@/app/hooks/useAuth";
-import { logout } from "@/app/auth/authService";
+import { logout } from "@/app/service/authService";
 
 export default function NavbarComponent() {
   const { isAuthenticated } = useAuth();

@@ -5,6 +5,7 @@ import {
   singleRestaurant,
 } from "./restaurantControllers";
 import { addReview, restaurantReviews } from "./reviewControllers";
+import { protectedControllers } from "./protectedControllers";
 
 export {
   userLogin,
@@ -15,4 +16,5 @@ export {
   singleRestaurant,
   addReview,
   restaurantReviews,
+  protectedControllers,
 };
