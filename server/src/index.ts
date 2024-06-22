@@ -4,6 +4,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
+import restaurantRoutes from "./routes/restaurantRoutes";
+import reviewRoutes from "./routes/reviewRoutes";
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/api", userRoutes);
+app.use("/api", restaurantRoutes);
+app.use("/api", reviewRoutes);
 
 ConnectDB()
   .then(() => {

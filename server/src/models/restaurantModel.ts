@@ -5,24 +5,28 @@ interface IRestaurant extends Document {
   description: string;
   image: string;
   slug: string;
-  averageRating?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  averageRating: number;
 }
 
-const restaurantSchema = new Schema<IRestaurant>(
+const restaurantSchema = new Schema(
   {
     restaurantTitle: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    slug: { type: String, required: true },
-    averageRating: { type: Number, min: 0, max: 5 },
+    slug: { type: String, required: true, unique: true },
+    averageRating: { type: Number, default: 0 },
   },
   {
     timestamps: true,
   }
 );
 
-const Restaurant = mongoose.model<IRestaurant>("restaurant", restaurantSchema);
+restaurantSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "restaurant",
+});
+
+const Restaurant = mongoose.model<IRestaurant>("Restaurant", restaurantSchema);
 
 export default Restaurant;

@@ -1,37 +1,55 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-interface IReview extends Document {
-  restaurantId: mongoose.Types.ObjectId;
-  userId: mongoose.Types.ObjectId;
-  reviews: Array<{ label: string; rating: number }>;
-  createdAt: Date;
-  updatedAt: Date;
+interface IReviewItem {
+  label: string;
+  rating: number;
 }
 
-const reviewSchema = new Schema<IReview>(
+interface IReview extends Document {
+  user: mongoose.Types.ObjectId;
+  restaurant: mongoose.Types.ObjectId;
+  reviews: IReviewItem[];
+}
+
+const reviewItemSchema = new Schema({
+  label: { type: String, required: true },
+  rating: { type: Number, required: true, min: 0, max: 5 },
+});
+
+const reviewSchema = new Schema(
   {
-    restaurantId: {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    restaurant: {
       type: Schema.Types.ObjectId,
-      ref: "restaurant",
+      ref: "Restaurant",
       required: true,
     },
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
-      required: true,
-    },
-    reviews: [
-      {
-        label: { type: String, required: true },
-        rating: { type: Number, required: true, default: 0 },
-      },
-    ],
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
+    reviews: [reviewItemSchema],
   },
-  { _id: true }
+  { timestamps: true }
 );
 
-const Review = mongoose.model<IReview>("review", reviewSchema);
+reviewSchema.post<IReview>("save", async function (doc) {
+  const restaurant = await mongoose
+    .model("Restaurant")
+    .findById(doc.restaurant);
+  if (restaurant) {
+    const reviews = await mongoose.model<IReview>("Review").find({
+      restaurant: restaurant._id,
+    });
+    const totalRating = reviews.reduce(
+      (acc, review) =>
+        acc +
+        review.reviews.reduce((sum, item) => sum + item.rating, 0) /
+          review.reviews.length,
+      0
+    );
+    const averageRating = totalRating / reviews.length;
+    restaurant.averageRating = averageRating;
+    await restaurant.save();
+  }
+});
+
+const Review: Model<IReview> = mongoose.model<IReview>("Review", reviewSchema);
 
 export default Review;
