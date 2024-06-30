@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { getToken, logout } from "@/app/service/authService";
@@ -25,6 +27,7 @@ export const useAuth = () => {
           );
           setIsAuthenticated(true);
           setUser(response.data.user);
+          console.log("User authenticated", response.data.user);
         } catch (error) {
           console.error("Authentication failed: ", error);
           logout();

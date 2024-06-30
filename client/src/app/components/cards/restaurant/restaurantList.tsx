@@ -2,11 +2,12 @@ import { fetchRestaurants } from "@/app/utils/api";
 import RestaurantCard from "./restaurantCard";
 
 interface IRestaurant {
+  _id: string;
   restaurantTitle: string;
   description: string;
   image: string;
   slug: string;
-  averageRating: number;
+  totalAverage: number;
 }
 
 async function getRestaurants() {
@@ -19,16 +20,20 @@ export default async function Restaurants() {
 
   return (
     <div className="flex flex-col gap-10">
-      {restaurants.map((restaurant: IRestaurant) => (
-        <RestaurantCard
-          key={restaurant.slug}
-          restaurantTitle={restaurant.restaurantTitle}
-          description={restaurant.description}
-          image={restaurant.image}
-          slug={restaurant.slug}
-          averageRating={restaurant.averageRating}
-        />
-      ))}
+      {restaurants ? (
+        restaurants.map((restaurant: IRestaurant) => (
+          <RestaurantCard
+            key={restaurant._id}
+            restaurantTitle={restaurant.restaurantTitle}
+            description={restaurant.description}
+            image={restaurant.image}
+            slug={restaurant.slug}
+            totalAverage={restaurant.totalAverage}
+          />
+        ))
+      ) : (
+        <div>No restaurants found....</div>
+      )}
     </div>
   );
 }

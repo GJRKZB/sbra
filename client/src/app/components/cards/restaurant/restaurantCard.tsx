@@ -1,12 +1,12 @@
-import { Card, CardFooter, Image } from "@nextui-org/react";
-// import ViewRestaurantBtn from "../../buttons/restaurant/viewRestaurantBtn";
+import { Card, CardFooter, Image, Button } from "@nextui-org/react";
+import Link from "next/link";
 
 interface RestaurantCardProps {
   restaurantTitle: string;
   description: string;
   image: string;
   slug: string;
-  averageRating: number;
+  totalAverage: number;
 }
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({
@@ -14,7 +14,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   description,
   image,
   slug,
-  averageRating,
+  totalAverage,
 }) => {
   return (
     <div className="h-96">
@@ -29,11 +29,17 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           <div>
             <h1 className="text-xl font-bold">{restaurantTitle}</h1>
             <p className="text-base font-normal">{description}</p>
-            <p className="text-sm">
-              Average rating: {averageRating.toFixed(1)}
-            </p>
+            <p className="text-sm">Average rating: {totalAverage.toFixed(1)}</p>
           </div>
-          {/* <ViewRestaurantBtn slug={slug} /> */}
+          <Link href={`/restaurant/${slug}`}>
+            <Button
+              className="text-sm text-white bg-black"
+              radius="full"
+              size="lg"
+            >
+              Go to restaurant
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </div>

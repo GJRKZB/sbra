@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Restaurant } from "../models";
+import { Restaurant, User } from "../models";
 
 export const addRestaurant = async (req: Request, res: Response) => {
   const { restaurantTitle, description, image, slug } = req.body;
@@ -22,7 +22,7 @@ export const addRestaurant = async (req: Request, res: Response) => {
 
 export const allRestaurants = async (req: Request, res: Response) => {
   try {
-    const restaurants = await Restaurant.find();
+    const restaurants = await Restaurant.find().sort({ totalAverage: -1 });
     return res.status(200).json({ restaurants });
   } catch (error) {
     return res.status(500).json({
@@ -32,10 +32,9 @@ export const allRestaurants = async (req: Request, res: Response) => {
 };
 
 export const singleRestaurant = async (req: Request, res: Response) => {
+  const { slug } = req.params;
   try {
-    const restaurant = await Restaurant.findById(req.params.id).populate(
-      "reviews"
-    );
+    const restaurant = await Restaurant.find({ slug });
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant not found." });
     }

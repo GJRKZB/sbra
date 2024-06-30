@@ -1,55 +1,36 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose from "mongoose";
 
-interface IReviewItem {
+interface IRating {
   label: string;
   rating: number;
 }
 
-interface IReview extends Document {
+interface IReviewItems {
   user: mongoose.Types.ObjectId;
   restaurant: mongoose.Types.ObjectId;
-  reviews: IReviewItem[];
+  reviews: IRating[];
+  average: number;
 }
 
-const reviewItemSchema = new Schema({
+const reviewItemSchema = new mongoose.Schema({
   label: { type: String, required: true },
   rating: { type: Number, required: true, min: 0, max: 5 },
 });
 
-const reviewSchema = new Schema(
+const reviewSchema = new mongoose.Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     restaurant: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurant",
       required: true,
     },
     reviews: [reviewItemSchema],
+    average: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
 
-reviewSchema.post<IReview>("save", async function (doc) {
-  const restaurant = await mongoose
-    .model("Restaurant")
-    .findById(doc.restaurant);
-  if (restaurant) {
-    const reviews = await mongoose.model<IReview>("Review").find({
-      restaurant: restaurant._id,
-    });
-    const totalRating = reviews.reduce(
-      (acc, review) =>
-        acc +
-        review.reviews.reduce((sum, item) => sum + item.rating, 0) /
-          review.reviews.length,
-      0
-    );
-    const averageRating = totalRating / reviews.length;
-    restaurant.averageRating = averageRating;
-    await restaurant.save();
-  }
-});
-
-const Review: Model<IReview> = mongoose.model<IReview>("Review", reviewSchema);
+const Review = mongoose.model<IReviewItems>("Review", reviewSchema);
 
 export default Review;

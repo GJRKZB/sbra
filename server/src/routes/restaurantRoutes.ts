@@ -9,6 +9,6 @@ const router = Router();
 
 router.post("/restaurants", addRestaurant);
 router.get("/restaurants", allRestaurants);
-router.get("/restaurants/:id", singleRestaurant);
+router.get("/restaurants/:slug", singleRestaurant);
 
 export default router;
