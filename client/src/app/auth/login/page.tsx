@@ -1,24 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
-import { loginSchema, IErrors } from "@/app/utils/validation";
-import { useRouter } from "next/navigation";
-import { login } from "../authService";
-import Redirect from "@/app/components/buttons/redirect/redirect";
 import Link from "next/link";
-
-interface ILoginInput {
-  email: string;
-  password: string;
-}
+import { loginSchema, IErrors } from "@/app/utils/validation";
+import { login, ILoginData } from "@/app/service/authService";
 
 const Login: React.FC = () => {
   const router = useRouter();
-  const [loginData, setLoginData] = useState<ILoginInput>({
-    email: "Robin@gmail.com",
-    password: "test",
+  const [loginData, setLoginData] = useState<ILoginData>({
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState<IErrors>({});
 
@@ -86,14 +80,13 @@ const Login: React.FC = () => {
           Login
         </Button>
         <p className="font-mono text-sm">Don't have an account?</p>
-        <Redirect url="/auth/register">Register</Redirect>
-      </form>
-      <p className="font-mono text-sm">
-        Or return to the{" "}
-        <Link href="/" className="font-bold">
-          homepage
+        <Link href="/auth/register" className="font-mono text-sm font-bold">
+          Register
         </Link>
-      </p>
+      </form>
+      <Link href="/" className="font-mono text-sm">
+        Return to homepage
+      </Link>
     </div>
   );
 };

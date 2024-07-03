@@ -1,11 +1,13 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getToken, logout } from "@/app/auth/authService";
+import { getToken, logout } from "@/app/service/authService";
 import { useRouter } from "next/navigation";
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUsername] = useState<{
+  const [user, setUser] = useState<{
     _id: string;
     email: string;
   } | null>(null);
@@ -13,29 +15,28 @@ export const useAuth = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      axios
-        .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/protected`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
+    const verifyToken = async () => {
+      const token = getToken();
+      if (token) {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/protected`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
           setIsAuthenticated(true);
-          setUsername(response.data.user);
-          setLoading(false);
-        })
-        .catch((error) => {
+          setUser(response.data.user);
+        } catch (error) {
           console.error("Authentication failed: ", error);
-          setIsAuthenticated(false);
-          setLoading(false);
           logout();
           router.push("/auth/login");
-        });
-    } else {
+        }
+      }
       setLoading(false);
-    }
+    };
+
+    verifyToken();
   }, [router]);
 
   return { isAuthenticated, user, loading };

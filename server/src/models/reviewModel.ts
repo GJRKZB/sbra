@@ -1,22 +1,36 @@
 import mongoose from "mongoose";
 
-interface IRestaurant {
-  user: mongoose.Schema.Types.ObjectId;
-  title: string;
-  reviews: { [key: string]: number };
+interface IRating {
+  label: string;
+  rating: number;
 }
 
-const reviewSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-  title: { type: String, required: true },
-  reviews: [
-    {
-      label: { type: String, required: true },
-      review: { type: Number, required: true },
-      _id: false,
-    },
-  ],
+interface IReviewItems {
+  user: mongoose.Types.ObjectId;
+  restaurant: mongoose.Types.ObjectId;
+  reviews: IRating[];
+  average: number;
+}
+
+const reviewItemSchema = new mongoose.Schema({
+  label: { type: String, required: true },
+  rating: { type: Number, required: true, min: 0, max: 5 },
 });
 
-export default mongoose.models.reviews ||
-  mongoose.model<IRestaurant>("reviews", reviewSchema);
+const reviewSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    restaurant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
+    reviews: [reviewItemSchema],
+    average: { type: Number, default: 0 },
+  },
+  { timestamps: true }
+);
+
+const Review = mongoose.model<IReviewItems>("Review", reviewSchema);
+
+export default Review;

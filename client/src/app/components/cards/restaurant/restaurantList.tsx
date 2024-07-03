@@ -1,20 +1,39 @@
-import data from "@/app/data/restaurants.json";
-import RestaurantCard from "@/app/components/cards/restaurant/restaurantCard";
+import { fetchRestaurants } from "@/app/utils/api";
+import RestaurantCard from "./restaurantCard";
 
-const Restaurants: React.FC = () => {
+interface IRestaurant {
+  _id: string;
+  restaurantTitle: string;
+  description: string;
+  image: string;
+  slug: string;
+  totalAverage: number;
+}
+
+async function getRestaurants() {
+  const res = await fetchRestaurants();
+  return res.restaurants;
+}
+
+export default async function Restaurants() {
+  const restaurants = await getRestaurants();
+
   return (
     <div className="flex flex-col gap-10">
-      {data.restaurants.map((restaurant) => (
-        <RestaurantCard
-          key={restaurant.id}
-          title={restaurant.title}
-          description={restaurant.description}
-          image={restaurant.image}
-          slug={restaurant.slug}
-        />
-      ))}
+      {restaurants ? (
+        restaurants.map((restaurant: IRestaurant) => (
+          <RestaurantCard
+            key={restaurant._id}
+            restaurantTitle={restaurant.restaurantTitle}
+            description={restaurant.description}
+            image={restaurant.image}
+            slug={restaurant.slug}
+            totalAverage={restaurant.totalAverage}
+          />
+        ))
+      ) : (
+        <div>No restaurants found....</div>
+      )}
     </div>
   );
-};
-
-export default Restaurants;
+}

@@ -8,44 +8,36 @@
       "totalReview": 4.5,
       "reviews": [
         {
-          "id": 1,
           "label": "Hoe ziet het eruit?",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 2,
           "label": "Hoe makkelijk van het bot?",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 3,
           "label": "Smaak",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 4,
           "label": "Smaak Marinade",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 5,
           "label": "Happy hands",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 6,
           "label": "Sfeer omgeving",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 7,
           "label": "Hoe schoon toilet?",
-          "review": 0
+          "rating": 0
         },
         {
-          "id": 8,
           "label": "Snelheid personeel",
-          "review": 0
+          "rating": 0
         }
       ],
       "slug": "burger-king"

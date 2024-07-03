@@ -1,24 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { registerSchema, IErrors } from "@/app/utils/validation";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
-import Redirect from "@/app/components/buttons/redirect/redirect";
 import Link from "next/link";
-
-interface IRegisterInput {
-  email: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
+import { registerSchema, IErrors } from "@/app/utils/validation";
+import { register, IRegisterData } from "@/app/service/authService";
 
 const Register: React.FC = () => {
   const router = useRouter();
-  const [register, setRegister] = useState<IRegisterInput>({
+  const [registerData, setRegisterData] = useState<IRegisterData>({
     email: "",
     username: "",
     password: "",
@@ -28,25 +20,23 @@ const Register: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setRegister((prevState) => ({ ...prevState, [name]: value }));
+    setRegisterData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const parseRegister = registerSchema.safeParse(register);
+      const parseRegister = registerSchema.safeParse(registerData);
       if (!parseRegister.success) {
         setErrors(parseRegister.error.formErrors.fieldErrors);
         return;
+      }
+
+      const result = await register(registerData);
+      if (result.success) {
+        router.push("/auth/login");
       } else {
-        const result = await axios.post(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/register`,
-          register
-        );
-        if (result) {
-          router.push("/auth/login");
-          console.log(register);
-        }
+        setErrors({ email: result.message });
       }
     } catch (error: any) {
       const serverError = error.response.data.error;
@@ -72,7 +62,7 @@ const Register: React.FC = () => {
           name="email"
           placeholder="Email"
           variant="bordered"
-          value={register.email}
+          value={registerData.email}
           onChange={handleChange}
           isInvalid={!!errors.email}
           errorMessage={errors.email}
@@ -84,7 +74,7 @@ const Register: React.FC = () => {
           name="username"
           placeholder="Username"
           variant="bordered"
-          value={register.username}
+          value={registerData.username}
           onChange={handleChange}
           isInvalid={!!errors.username}
           errorMessage={errors.username}
@@ -96,7 +86,7 @@ const Register: React.FC = () => {
           name="password"
           placeholder="Password"
           variant="bordered"
-          value={register.password}
+          value={registerData.password}
           onChange={handleChange}
           isInvalid={!!errors.password}
           errorMessage={errors.password}
@@ -107,7 +97,7 @@ const Register: React.FC = () => {
           name="confirmPassword"
           placeholder="Confirm Password"
           variant="bordered"
-          value={register.confirmPassword}
+          value={registerData.confirmPassword}
           onChange={handleChange}
           isInvalid={!!errors.confirmPassword}
           errorMessage={errors.confirmPassword}
@@ -116,14 +106,13 @@ const Register: React.FC = () => {
           Register
         </Button>
         <p className="font-mono text-sm">Already have an account?</p>
-        <Redirect url="/auth/login">Login</Redirect>
-      </form>
-      <p className="font-mono text-sm">
-        Or return to the{" "}
-        <Link href="/" className="font-bold">
-          homepage
+        <Link href="/auth/login" className="font-mono text-sm font-bold">
+          Login
         </Link>
-      </p>
+      </form>
+      <Link href="/" className="font-mono text-sm">
+        Return to homepage
+      </Link>
     </div>
   );
 };
