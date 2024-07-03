@@ -27,7 +27,6 @@ export const useAuth = () => {
           );
           setIsAuthenticated(true);
           setUser(response.data.user);
-          console.log("User authenticated", response.data.user);
         } catch (error) {
           console.error("Authentication failed: ", error);
           logout();

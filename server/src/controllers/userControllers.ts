@@ -3,6 +3,7 @@ import { Restaurant, Review, User } from "../models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { CustomRequest } from "../types/types";
+import mongoose from "mongoose";
 
 export const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -51,8 +52,6 @@ export const userRegister = async (req: Request, res: Response) => {
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
 
-    console.log(newUser);
-
     return res
       .status(201)
       .json({ message: "User created successfully", success: true, newUser });
@@ -77,12 +76,29 @@ export const allReviewsUser = async (req: CustomRequest, res: Response) => {
       return res.status(404).json({ message: "Restaurant not found" });
     }
 
-    const reviews = await Review.find({
+    let review = await Review.findOne({
       user: userId,
       restaurant: restaurant._id,
     }).populate("restaurant", "restaurantTitle slug");
 
-    return res.json(reviews);
+    if (!review) {
+      return res.json({
+        _id: new mongoose.Types.ObjectId(),
+        user: userId,
+        restaurant: {
+          _id: restaurant._id,
+          restaurantTitle: restaurant.restaurantTitle,
+          slug: restaurant.slug,
+        },
+        reviews: restaurant.reviews,
+        average: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        __v: 0,
+      });
+    }
+
+    return res.json(review);
   } catch (error) {
     console.error("Error fetching user reviews:", error);
     return res.status(500).json({

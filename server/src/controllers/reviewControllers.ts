@@ -4,6 +4,7 @@ import { CustomRequest } from "../types/types";
 
 export const addReview = async (req: CustomRequest, res: Response) => {
   const { userId, restaurantId, reviews } = req.body;
+
   try {
     let review = await Review.findOne({
       user: userId,

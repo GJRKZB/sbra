@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { Restaurant, User } from "../models";
+import { Restaurant } from "../models";
 
 export const addRestaurant = async (req: Request, res: Response) => {
-  const { restaurantTitle, description, image, slug } = req.body;
+  const { restaurantTitle, description, image, slug, reviews } = req.body;
 
   try {
     const newRestaurant = new Restaurant({
@@ -10,8 +10,19 @@ export const addRestaurant = async (req: Request, res: Response) => {
       description,
       image,
       slug,
+      reviews: reviews || [
+        { label: "Hoe ziet het eruit?", rating: 0 },
+        { label: "Hoe makkelijk van het bot?", rating: 0 },
+        { label: "Smaak", rating: 0 },
+        { label: "Smaak Marinade", rating: 0 },
+        { label: "Happy hands", rating: 0 },
+        { label: "Sfeer omgeving", rating: 0 },
+        { label: "Hoe schoon toilet?", rating: 0 },
+        { label: "Snelheid personeel", rating: 0 },
+      ],
     });
     await newRestaurant.save();
+
     return res.status(201).json({ message: "Restaurant added successfully." });
   } catch (error) {
     return res.status(500).json({

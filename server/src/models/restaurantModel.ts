@@ -6,7 +6,13 @@ interface IRestaurant {
   image: string;
   slug: string;
   totalAverage: number;
+  reviews: number[];
 }
+
+const defaultReviewSchema = new mongoose.Schema({
+  label: { type: String, required: true },
+  rating: { type: Number, default: 0 },
+});
 
 const restaurantSchema = new mongoose.Schema(
   {
@@ -15,6 +21,7 @@ const restaurantSchema = new mongoose.Schema(
     image: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     totalAverage: { type: Number, default: 0 },
+    reviews: [defaultReviewSchema],
   },
   {
     timestamps: true,

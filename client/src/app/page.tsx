@@ -31,6 +31,7 @@ export default function Page() {
             eu exercitation ad. Id et dolor ut excepteur ullamco aliqua ullamco
             proident aliqua.
           </p>
+          <h2 className="font-bold text-2xl">Leaderboard</h2>
           <RestaurantList />
         </section>
       </article>
