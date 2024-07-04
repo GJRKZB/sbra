@@ -13,6 +13,19 @@ export async function fetchRestaurants() {
   }
 }
 
+export async function fetchRestaurantReviews(slug: string) {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/restaurants/${slug}`
+    );
+    console.log("API Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export async function fetchUserRestaurantReviews(slug: string) {
   const token = getToken();
   if (!token) {

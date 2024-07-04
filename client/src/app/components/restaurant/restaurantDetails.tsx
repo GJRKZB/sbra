@@ -10,7 +10,7 @@ import { useAuth } from "@/app/hooks/useAuth";
 import { useEffect, useState } from "react";
 
 interface RestaurantDetailsProps {
-  restaurant: {
+  initialRestaurant: {
     restaurantTitle: string;
     description: string;
     image: string;
@@ -21,7 +21,7 @@ interface RestaurantDetailsProps {
 }
 
 export default function RestaurantDetails({
-  restaurant: initialRestaurant,
+  initialRestaurant: initialRestaurant,
 }: RestaurantDetailsProps) {
   const { isAuthenticated, user } = useAuth();
   const [loading, setLoading] = useState(true);
