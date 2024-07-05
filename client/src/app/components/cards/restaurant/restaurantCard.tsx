@@ -1,6 +1,5 @@
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 import Link from "next/link";
-import ClientRating from "./clientRating";
 
 interface RestaurantCardProps {
   restaurantTitle: string;
@@ -15,6 +14,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   description,
   image,
   slug,
+  totalAverage,
 }) => {
   return (
     <div className="h-96">
@@ -29,7 +29,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           <div>
             <h1 className="text-xl font-bold">{restaurantTitle}</h1>
             <p className="text-base font-normal">{description}</p>
-            <ClientRating slug={slug} />
+            <p>Average Rating: {totalAverage.toFixed(1)}</p>
           </div>
           <Link href={`/restaurant/${slug}`}>
             <Button
