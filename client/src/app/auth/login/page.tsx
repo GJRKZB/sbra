@@ -33,9 +33,9 @@ const Login: React.FC = () => {
       if (result.success) {
         router.push("/");
       } else {
-        if (result.message === "User not found") {
+        if (result.message === "Gebruiker bestaat niet") {
           setErrors({ email: result.message });
-        } else if (result.message === "Invalid password") {
+        } else if (result.message === "Ongeldig wachtwoord") {
           setErrors({ password: result.message });
         }
       }
@@ -55,9 +55,9 @@ const Login: React.FC = () => {
         <Input
           isRequired
           type="text"
-          label="Email"
+          label="E-mailadres"
           name="email"
-          placeholder="Email"
+          placeholder="E-mailadres"
           variant="bordered"
           value={loginData.email}
           onChange={handleChange}
@@ -67,9 +67,9 @@ const Login: React.FC = () => {
         <Input
           isRequired
           type="password"
-          label="Password"
+          label="Wachtwoord"
           name="password"
-          placeholder="Password"
+          placeholder="Wachtwoord"
           variant="bordered"
           value={loginData.password}
           onChange={handleChange}
@@ -77,15 +77,15 @@ const Login: React.FC = () => {
           errorMessage={errors.password}
         />
         <Button color="default" variant="ghost" size="lg" type="submit">
-          Login
+          Inloggen
         </Button>
-        <p className="font-mono text-sm">Don't have an account?</p>
+        <p className="font-mono text-sm">Nog geen account?</p>
         <Link href="/auth/register" className="font-mono text-sm font-bold">
-          Register
+          Registreren
         </Link>
       </form>
       <Link href="/" className="font-mono text-sm">
-        Return to homepage
+        Terug naar homepage
       </Link>
     </div>
   );

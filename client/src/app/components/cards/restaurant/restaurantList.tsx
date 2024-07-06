@@ -8,6 +8,7 @@ import { Spinner } from "@nextui-org/react";
 interface IRestaurant {
   _id: string;
   restaurantTitle: string;
+  location: string;
   description: string;
   image: string;
   slug: string;
@@ -45,7 +46,7 @@ export default function Restaurants() {
     return (
       <div>
         <Spinner
-          label="Loading Restaurants"
+          label="Restaurants laden..."
           color="default"
           labelColor="foreground"
         />
@@ -64,7 +65,7 @@ export default function Restaurants() {
           <RestaurantCard key={restaurant._id} {...restaurant} />
         ))
       ) : (
-        <div>No restaurants found....</div>
+        <div>Geen restaurants gevonden...</div>
       )}
     </div>
   );

@@ -11,12 +11,12 @@ export const userLogin = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(400).json({ error: "Gebruiker bestaat niet" });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(400).json({ error: "Invalid password" });
+      return res.status(400).json({ error: "Ongeldig wachtwoord" });
     }
 
     if (user && validPassword) {
@@ -43,7 +43,7 @@ export const userRegister = async (req: Request, res: Response) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: "Email already exists" });
+      return res.status(400).json({ error: "E-mailadres bestaat al" });
     }
 
     const salt = await bcrypt.genSalt(10);

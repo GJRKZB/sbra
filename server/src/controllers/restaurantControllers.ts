@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import { Restaurant } from "../models";
 
 export const addRestaurant = async (req: Request, res: Response) => {
-  const { restaurantTitle, description, image, slug, reviews } = req.body;
+  const { restaurantTitle, location, description, image, slug, reviews } =
+    req.body;
 
   try {
     const newRestaurant = new Restaurant({
       restaurantTitle,
+      location,
       description,
       image,
       slug,

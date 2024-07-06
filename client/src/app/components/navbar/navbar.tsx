@@ -15,7 +15,7 @@ export default function NavbarComponent() {
     <Navbar shouldHideOnScroll maxWidth="full">
       <NavbarItem>
         <Link href="/" className="text-base font-mono text-black">
-          Home
+          Homepage
         </Link>
       </NavbarItem>
       <NavbarContent justify="end">
@@ -30,7 +30,7 @@ export default function NavbarComponent() {
                 className="text-base text-white font-mono bg-black"
                 onClick={() => logout()}
               >
-                Logout
+                Uitloggen
               </Button>
             </NavbarItem>
           </>
@@ -41,7 +41,7 @@ export default function NavbarComponent() {
                 href="/auth/login"
                 className="text-base font-mono text-black"
               >
-                Login
+                Inloggen
               </Link>
             </NavbarItem>
             <NavbarItem>
@@ -52,7 +52,7 @@ export default function NavbarComponent() {
                 href="/auth/register"
                 className="text-base text-white font-mono bg-black"
               >
-                Register
+                Registreer
               </Button>
             </NavbarItem>
           </>
