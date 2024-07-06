@@ -9,8 +9,8 @@ export interface IErrors {
 }
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1, { message: "Password is required" }),
+  email: z.string().email({ message: "Ongeldig e-mailadres" }),
+  password: z.string().min(1, { message: "Ongeldig wachtwoord" }),
 });
 
 const registerSchema = z
@@ -25,7 +25,7 @@ const registerSchema = z
       return data.password === data.confirmPassword;
     },
     {
-      message: "Passwords must match!",
+      message: "Wachtwoord komt niet overeen",
       path: ["confirmPassword"],
     }
   );

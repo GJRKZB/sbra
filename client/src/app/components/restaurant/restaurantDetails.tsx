@@ -127,7 +127,7 @@ export default function RestaurantDetails({
     return (
       <div className="flex justify-center">
         <Spinner
-          label="Loading Restaurant"
+          label="Restaurant laden..."
           color="default"
           labelColor="foreground"
         />
@@ -138,8 +138,8 @@ export default function RestaurantDetails({
   if (error) return <div>{error}</div>;
 
   return (
-    <main className="h-full w-screen px-5 py-10">
-      <article className="flex justify-center flex-col items-center gap-10 w-full">
+    <main className="h-full w-screen px-5 py-10 flex flex-col items-center">
+      <article className="flex flex-col gap-10 max-w-2xl">
         <section className="font-mono text-center flex flex-col gap-10 w-full items-center">
           <h1 className="font-bold text-2xl">{restaurant.restaurantTitle}</h1>
           <p className="font-normal text-base">{restaurant.description}</p>
@@ -150,7 +150,7 @@ export default function RestaurantDetails({
             className="object-cover w-screen h-96"
           />
           <div className="flex flex-col gap-2 items-center">
-            <p className="font-bold text-base text-black">Rating:</p>
+            <p className="font-bold text-base text-black">Gemiddelde rating</p>
             <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
               <p className="font-bold text-base text-white">
                 {restaurant.totalAverage?.toFixed(1)}
@@ -159,8 +159,8 @@ export default function RestaurantDetails({
           </div>
           {isAuthenticated && (
             <>
-              <div className="flex flex-col items-center gap-5">
-                <p>Personal rating:</p>
+              <div className="flex flex-col items-center gap-5 font-bold">
+                <p>Jouw rating:</p>
                 <div className="bg-black rounded-full w-20 h-20 items-center flex justify-center">
                   <p className="font-bold text-base text-white">
                     {userAverageRating?.toFixed(1) || 0}
@@ -204,7 +204,9 @@ export default function RestaurantDetails({
                 isLoading={loadingSubmisson}
                 spinner={<Spinner color="default" labelColor="foreground" />}
               >
-                {loadingSubmisson ? "Submitting..." : "Submit"}
+                {loadingSubmisson
+                  ? "Bezig met toevoegen..."
+                  : "Beoordeling toevoegen"}
               </Button>
               {error && <p className="text-red-500">{error}</p>}
             </>
