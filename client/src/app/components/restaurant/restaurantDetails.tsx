@@ -1,6 +1,6 @@
 "use client";
 
-import { Image, Slider, Button } from "@nextui-org/react";
+import { Image, Slider, Button, Spinner } from "@nextui-org/react";
 import {
   fetchUserRestaurantReviews,
   addUserRestaurantReviews,
@@ -24,7 +24,8 @@ export default function RestaurantDetails({
   initialRestaurant: initialRestaurant,
 }: RestaurantDetailsProps) {
   const { isAuthenticated, user } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loadingSubmisson, setLoadingSubmission] = useState(false);
+  const [loadingContent, isLoadingContent] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userReviews, setUserReviews] = useState<any | null>(null);
   const [userAverageRating, setUserAverageRating] = useState<number | null>(
@@ -34,11 +35,11 @@ export default function RestaurantDetails({
 
   const fetchUserReviews = async () => {
     if (!isAuthenticated) {
-      setLoading(false);
+      isLoadingContent(false);
       return;
     }
     try {
-      setLoading(true);
+      isLoadingContent(true);
       const response = await fetchUserRestaurantReviews(restaurant.slug);
       if (response) {
         setUserReviews(response);
@@ -48,7 +49,7 @@ export default function RestaurantDetails({
       console.error("Failed to fetch user reviews", error);
       setError("Failed to fetch reviews. Please try again later.");
     } finally {
-      setLoading(false);
+      isLoadingContent(false);
     }
   };
 
@@ -97,7 +98,7 @@ export default function RestaurantDetails({
     }
 
     try {
-      setLoading(true);
+      setLoadingSubmission(true);
       const reviewsToSubmit = userReviews.reviews.map(
         ({ label, rating }: { label: string; rating: number }) => ({
           label,
@@ -117,12 +118,23 @@ export default function RestaurantDetails({
       console.error("Failed to submit review", error);
       setError("Failed to submit review. Please try again later.");
     } finally {
-      setLoading(false);
+      setLoadingSubmission(false);
       fetchUserReviews();
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loadingContent) {
+    return (
+      <div className="flex justify-center">
+        <Spinner
+          label="Loading Restaurant"
+          color="default"
+          labelColor="foreground"
+        />
+      </div>
+    );
+  }
+
   if (error) return <div>{error}</div>;
 
   return (
@@ -188,9 +200,11 @@ export default function RestaurantDetails({
                 className="text-normal text-white bg-black p-8"
                 radius="full"
                 onClick={handleSubmit}
-                disabled={loading || !isAuthenticated}
+                disabled={loadingSubmisson || !isAuthenticated}
+                isLoading={loadingSubmisson}
+                spinner={<Spinner color="default" labelColor="foreground" />}
               >
-                {loading ? "Submitting..." : "Submit"}
+                {loadingSubmisson ? "Submitting..." : "Submit"}
               </Button>
               {error && <p className="text-red-500">{error}</p>}
             </>
