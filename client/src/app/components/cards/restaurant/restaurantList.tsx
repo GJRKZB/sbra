@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchRestaurants } from "@/app/utils/api";
 import RestaurantCard from "./restaurantCard";
+import { Spinner } from "@nextui-org/react";
 
 interface IRestaurant {
   _id: string;
@@ -41,7 +42,15 @@ export default function Restaurants() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading restaurants...</div>;
+    return (
+      <div>
+        <Spinner
+          label="Loading Restaurants"
+          color="default"
+          labelColor="foreground"
+        />
+      </div>
+    );
   }
 
   if (error) {

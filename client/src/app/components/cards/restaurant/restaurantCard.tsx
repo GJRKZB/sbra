@@ -29,7 +29,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           <div>
             <h1 className="text-xl font-bold">{restaurantTitle}</h1>
             <p className="text-base font-normal">{description}</p>
-            <p>Average Rating: {totalAverage.toFixed(1)}</p>
+            <p className="text-base font-normal">
+              Average Rating: {totalAverage.toFixed(1) || 0}
+            </p>
           </div>
           <Link href={`/restaurant/${slug}`}>
             <Button
