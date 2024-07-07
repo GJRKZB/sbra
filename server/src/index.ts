@@ -18,6 +18,7 @@ export const getCorsDomain = () => {
     "http://localhost:3000",
     "https://spareribs-hoekschewaard.vercel.app",
   ];
+  console.log(allowedOrigins);
   return allowedOrigins;
 };
 
