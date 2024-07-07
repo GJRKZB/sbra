@@ -13,24 +13,20 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 8080;
 
-const allowedOrigins = [
-  "https://spareribs-hoekschewaard.vercel.app",
-  "http://localhost:3000",
-];
+const isDevelopment = process.env.NODE_ENV === "development";
 
-const corsOptions: cors.CorsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
+const allowedOrigins = isDevelopment
+  ? ["https://spareribs-hoekschewaard.vercel.app"]
+  : ["http://localhost:3000"];
 
-app.use(cors(corsOptions));
+console.log(allowedOrigins);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
