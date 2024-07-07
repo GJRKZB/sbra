@@ -19,7 +19,16 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   optionsSuccessStatus: 200,
 };
 
@@ -28,6 +37,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  console.log("Incoming request from origin:", req.headers.origin);
+  next();
+});
 
 app.use("/api", userRoutes);
 app.use("/api", restaurantRoutes);
